@@ -50,16 +50,63 @@
             color: #bbb;
             font-size: 0.9em;
         }
+        /* Login form styles */
+        .login-container {
+            display: none;
+            margin: 50px auto;
+            padding: 20px;
+            max-width: 400px;
+            background: rgba(50, 50, 50, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+        .login-container input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .login-container button {
+            background: #ff6600;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+        .logout-btn {
+            display: none;
+            background: #cc0000;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+
+    <div class="login-container" id="login-container">
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+    </div>
+
+    <div class="container" id="content" style="display:none;">
         <h1>Welcome to Prometheus Omniscient</h1>
         <p>At Prometheus Omniscient, we strive to revolutionize the world by providing businesses with AI solutions tailored specifically for their needs.</p>
         <p>Our mission is to empower companies with cutting-edge artificial intelligence, optimizing efficiency, decision-making, and innovation.</p>
+        <button class="logout-btn" onclick="logout()">Logout</button>
     </div>
 
-    <div class="container flagship">
+    <div class="container flagship" id="flagship" style="display:none;">
         <h2>Flagship Product</h2>
         <p>Introducing our AI Sales Pipeline Agent – an intelligent solution designed to enhance sales performance and customer understanding.</p>
         <p>By leveraging advanced machine learning, our AI provides deep insights into customer behavior, predicts sales trends, and automates key processes to maximize conversion rates.</p>
@@ -69,5 +116,41 @@
     <footer>
         &copy; 2025 Prometheus Omniscient. All rights reserved.
     </footer>
+
+    <script>
+        function login() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+
+            if (username === "admin" && password === "password123") {
+                localStorage.setItem("loggedIn", "true");
+                updateUI();
+            } else {
+                alert("Invalid username or password.");
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem("loggedIn");
+            updateUI();
+        }
+
+        function updateUI() {
+            if (localStorage.getItem("loggedIn") === "true") {
+                document.getElementById('login-container').style.display = "none";
+                document.getElementById('content').style.display = "block";
+                document.getElementById('flagship').style.display = "block";
+                document.querySelector('.logout-btn').style.display = "block";
+            } else {
+                document.getElementById('login-container').style.display = "block";
+                document.getElementById('content').style.display = "none";
+                document.getElementById('flagship').style.display = "none";
+                document.querySelector('.logout-btn').style.display = "none";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", updateUI);
+    </script>
+
 </body>
 </html>
